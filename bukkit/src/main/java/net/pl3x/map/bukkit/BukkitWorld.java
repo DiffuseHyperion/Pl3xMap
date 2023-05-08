@@ -65,7 +65,7 @@ public class BukkitWorld extends World {
             String id = entry.getKey().location().toString();
             Biome biome = entry.getValue();
             float temperature = Mathf.clamp(0.0F, 1.0F, biome.getBaseTemperature());
-            float humidity = Mathf.clamp(0.0F, 1.0F, biome.climateSettings.downfall());
+            float humidity = Mathf.clamp(0.0F, 1.0F, biome.getDownfall());
             getBiomeRegistry().register(
                     id,
                     ColorsConfig.BIOME_COLORS.getOrDefault(id, 0),
