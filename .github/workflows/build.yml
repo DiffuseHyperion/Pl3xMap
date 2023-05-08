@@ -31,29 +31,9 @@ jobs:
         run: ./gradlew hideOfficialWarningUntilChanged
       - name: Build
         run: ./gradlew build --stacktrace
-      - name: Generate Javadoc
-        run: ./gradlew javadoc
-      - name: Deploy Javadoc
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Store artifacts
+        uses: actions/upload-artifact@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: javadoc
-          clean: true
-          folder: core/build/docs/javadoc
-          target-folder: ./
-      - name: Publish to Modrinth
-        run: ./gradlew modrinth_nobuild --stacktrace
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
-        continue-on-error: true
-      - name: Notify Discord
-        uses: BillyGalbreath/actions-status-discord@main
-        if: success()
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          noprefix: true
-          title: New build of Pl3xMap is ready!
-          description: |
-            Version ${{ env.minecraftVersion }} build ${{ github.run_number }}
-            Click [here](https://modrinth.com/mod/pl3xmap/version/${{ env.minecraftVersion }}-${{ github.run_number }}) to download!
+          name: Pl3xMap-v3
+          path: |
+            build/libs
